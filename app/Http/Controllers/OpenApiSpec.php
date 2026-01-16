@@ -37,6 +37,14 @@ use OpenApi\Attributes as OA;
         name: 'User',
         description: 'API endpoints for user management'
     )]
+#[OA\Tag(
+        name: 'Role',
+        description: 'API endpoints for role management'
+    )]
+#[OA\Tag(
+        name: 'Permission',
+        description: 'API endpoints for permission management'
+    )]
 class OpenApiSpec
 {
     // This class exists solely to hold OpenAPI global attributes
