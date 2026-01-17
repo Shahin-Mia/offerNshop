@@ -11,7 +11,8 @@ import {
     FileText,
     Bell
 } from 'lucide-react';
-import { AuthProps } from '@/types/auth'; // Ensure this type exists or adjust path
+import { cn } from '@/lib/utils';
+import { Button } from '@/Components/ui/button';
 
 export default function Sidebar() {
     const { url } = usePage();
@@ -48,24 +49,24 @@ export default function Sidebar() {
     ];
 
     return (
-        <aside className="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col h-screen fixed left-0 top-0 z-30">
+        <aside className="w-64 bg-background border-r hidden md:flex flex-col h-screen fixed left-0 top-0 z-30">
             {/* Logo Area */}
-            <div className="h-16 flex items-center px-6 border-b border-gray-200">
+            <div className="h-16 flex items-center px-6 border-b">
                 <Link href="/" className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm">
+                    <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold text-sm">
                         ON
                     </div>
-                    <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+                    <span className="text-xl font-bold tracking-tight">
                         OfferNShop
                     </span>
                 </Link>
             </div>
 
             {/* Navigation */}
-            <div className="flex-1 overflow-y-auto py-4 px-3 space-y-6">
+            <div className="flex-1 overflow-y-auto py-6 px-3 space-y-6">
                 {navItems.map((group, groupIdx) => (
                     <div key={groupIdx}>
-                        <h3 className="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                        <h3 className="px-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
                             {group.heading}
                         </h3>
                         <div className="space-y-1">
@@ -73,17 +74,20 @@ export default function Sidebar() {
                                 const active = isActive(item.href);
                                 const Icon = item.icon;
                                 return (
-                                    <Link
+                                    <Button
                                         key={item.name}
-                                        href={item.href}
-                                        className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${active
-                                                ? 'bg-blue-50 text-blue-600'
-                                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                                            }`}
+                                        variant={active ? "secondary" : "ghost"}
+                                        className={cn(
+                                            "w-full justify-start gap-3",
+                                            active && "font-semibold"
+                                        )}
+                                        asChild
                                     >
-                                        <Icon className={`w-5 h-5 ${active ? 'text-blue-600' : 'text-gray-400'}`} />
-                                        {item.name}
-                                    </Link>
+                                        <Link href={item.href}>
+                                            <Icon className={cn("w-4 h-4", active ? "text-primary" : "text-muted-foreground")} />
+                                            {item.name}
+                                        </Link>
+                                    </Button>
                                 );
                             })}
                         </div>
@@ -92,17 +96,18 @@ export default function Sidebar() {
             </div>
 
             {/* User Profile Snippet (Bottom) */}
-            <div className="p-4 border-t border-gray-200">
+            <div className="p-4 border-t bg-muted/20">
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
                         A
                     </div>
                     <div>
-                        <p className="text-sm font-medium text-gray-900">Admin</p>
-                        <p className="text-xs text-gray-500">Super Admin</p>
+                        <p className="text-sm font-medium text-foreground">Admin</p>
+                        <p className="text-xs text-muted-foreground">Super Admin</p>
                     </div>
                 </div>
             </div>
         </aside>
     );
 }
+

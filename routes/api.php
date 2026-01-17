@@ -23,6 +23,11 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/social-login', [SocialAuthController::class, 'socialLogin']);
 
+// Password Reset routes
+Route::post('/forgot-password', [AuthController::class, 'requestPasswordResetOTP']);
+Route::post('/verify-otp', [AuthController::class, 'verifyOTP']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+
 // Protected routes (authentication required)
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);

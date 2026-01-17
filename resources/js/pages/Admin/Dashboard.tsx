@@ -6,73 +6,116 @@ import {
     Tag,
     Users
 } from 'lucide-react';
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/Components/ui/card"
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/Components/ui/table"
+import { Badge } from '@/Components/ui/badge';
 
 export default function AdminDashboard() {
     return (
         <AdminLayout title="Business Overview">
-            {/* Stats Rpw */}
+            {/* Stats Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                 <StatCard
                     title="Total Revenue"
-                    value="$0.00"
+                    value="$45,231.89"
                     icon={DollarSign}
-                    color="bg-blue-500"
+                    description="+20.1% from last month"
                 />
                 <StatCard
                     title="Active Shops"
-                    value="0"
+                    value="254"
                     icon={Store}
-                    color="bg-teal-400"
+                    description="+180 new shops"
                 />
                 <StatCard
                     title="Live Offers"
-                    value="0"
+                    value="1,203"
                     icon={Tag}
-                    color="bg-orange-400"
+                    description="+19% since last week"
                 />
                 <StatCard
                     title="Total Users"
-                    value="0"
+                    value="12,345"
                     icon={Users}
-                    color="bg-red-400"
+                    description="+201 since last hour"
                 />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Recent Activity */}
-                <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">Recent Activity</h3>
-
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-sm text-left">
-                            <thead className="bg-gray-50 text-gray-500 uppercase font-medium">
-                                <tr>
-                                    <th className="px-4 py-3 rounded-l-lg">Shop</th>
-                                    <th className="px-4 py-3">Action</th>
-                                    <th className="px-4 py-3">Time</th>
-                                    <th className="px-4 py-3 rounded-r-lg">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100">
-                                <tr>
-                                    <td className="px-4 py-4 text-center text-gray-400" colSpan={4}>
-                                        No recent activity found.
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <Card className="lg:col-span-2">
+                    <CardHeader>
+                        <CardTitle>Recent Activity</CardTitle>
+                        <CardDescription>Recent actions from shops and users.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Shop</TableHead>
+                                    <TableHead>Action</TableHead>
+                                    <TableHead>Time</TableHead>
+                                    <TableHead>Status</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell className="font-medium">Acme Corp</TableCell>
+                                    <TableCell>New Offer Created</TableCell>
+                                    <TableCell>2 mins ago</TableCell>
+                                    <TableCell>
+                                        <Badge>Success</Badge>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell className="font-medium">Global Markets</TableCell>
+                                    <TableCell>Shop Verified</TableCell>
+                                    <TableCell>15 mins ago</TableCell>
+                                    <TableCell>
+                                        <Badge variant="outline">Pending</Badge>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell className="font-medium">Tech Solutions</TableCell>
+                                    <TableCell>Profile Updated</TableCell>
+                                    <TableCell>1 hour ago</TableCell>
+                                    <TableCell>
+                                        <Badge variant="secondary">Review</Badge>
+                                    </TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
 
                 {/* Geo Usage Heatmap (Placeholder) */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">Geo Usage Heatmap</h3>
-                    <div className="aspect-square bg-gray-50 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-200">
-                        <span className="text-gray-400 font-medium">Map Placeholder</span>
-                    </div>
-                </div>
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Geo Usage</CardTitle>
+                        <CardDescription>User activity by location.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="aspect-square bg-muted rounded-md flex items-center justify-center border-2 border-dashed border-muted-foreground/25">
+                            <span className="text-muted-foreground font-medium">Map Placeholder</span>
+                        </div>
+                    </CardContent>
+                </Card>
             </div>
         </AdminLayout>
     );
 }
+
 

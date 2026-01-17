@@ -2,11 +2,16 @@
 
 use App\Http\Controllers\Auth\WebAuthController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 // Home page (public)
+// Root URL redirect
 Route::get('/', function () {
-    return Inertia::render('welcome');
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    }
+    return redirect()->route('login');
 })->name('home');
 
 // Guest routes (only accessible when not authenticated)
@@ -48,4 +53,36 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/users', function () {
         return Inertia::render('Admin/Users');
     })->name('users');
+
+    Route::get('/shops', function () {
+        return Inertia::render('Admin/Shops');
+    })->name('shops');
+
+    Route::get('/products', function () {
+        return Inertia::render('Admin/Products');
+    })->name('products');
+
+    Route::get('/offers', function () {
+        return Inertia::render('Admin/Offers');
+    })->name('offers');
+
+    Route::get('/categories', function () {
+        return Inertia::render('Admin/Categories');
+    })->name('categories');
+
+    Route::get('/notifications', function () {
+        return Inertia::render('Admin/Notifications');
+    })->name('notifications');
+
+    Route::get('/reports', function () {
+        return Inertia::render('Admin/Reports');
+    })->name('reports');
+
+    Route::get('/content', function () {
+        return Inertia::render('Admin/Content');
+    })->name('content');
+
+    Route::get('/settings', function () {
+        return Inertia::render('Admin/Settings');
+    })->name('settings');
 });

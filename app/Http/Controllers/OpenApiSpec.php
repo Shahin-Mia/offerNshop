@@ -11,40 +11,40 @@ use OpenApi\Attributes as OA;
     contact: new OA\Contact(email: 'support@offernshop.com')
 )]
 #[OA\Server(
-        url: 'http://localhost:8000',
-        description: 'Local Development Server'
-    )]
+    url: 'http://localhost:8000',
+    description: 'Local Development Server'
+)]
 #[OA\Server(
-        url: 'https://api.offernshop.com',
-        description: 'Production Server'
-    )]
+    url: 'https://offernshop.weblioo.com',
+    description: 'Production Server'
+)]
 #[OA\SecurityScheme(
-        securityScheme: 'bearerAuth',
-        type: 'http',
-        bearerFormat: 'Sanctum Token',
-        description: 'Enter your Sanctum API token',
-        scheme: 'bearer'
-    )]
+    securityScheme: 'bearerAuth',
+    type: 'http',
+    bearerFormat: 'Sanctum Token',
+    description: 'Enter your Sanctum API token',
+    scheme: 'bearer'
+)]
 #[OA\Tag(
-        name: 'Authentication',
-        description: 'API endpoints for user authentication'
-    )]
+    name: 'Authentication',
+    description: 'API endpoints for user authentication'
+)]
 #[OA\Tag(
-        name: 'Social Authentication',
-        description: 'API endpoints for social media authentication'
-    )]
+    name: 'Social Authentication',
+    description: 'API endpoints for social media authentication'
+)]
 #[OA\Tag(
-        name: 'User',
-        description: 'API endpoints for user management'
-    )]
+    name: 'User',
+    description: 'API endpoints for user management'
+)]
 #[OA\Tag(
-        name: 'Role',
-        description: 'API endpoints for role management'
-    )]
+    name: 'Role',
+    description: 'API endpoints for role management'
+)]
 #[OA\Tag(
-        name: 'Permission',
-        description: 'API endpoints for permission management'
-    )]
+    name: 'Permission',
+    description: 'API endpoints for permission management'
+)]
 class OpenApiSpec
 {
     // This class exists solely to hold OpenAPI global attributes

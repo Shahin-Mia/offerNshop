@@ -10,11 +10,8 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->unique();
-            $table->string('description')->nullable();
-            $table->timestamps();
+        Schema::table('password_reset_tokens', function (Blueprint $table) {
+            $table->unsignedTinyInteger('attempts')->default(0)->after('token');
         });
     }
 
@@ -23,6 +20,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::table('password_reset_tokens', function (Blueprint $table) {
+            $table->dropColumn('attempts');
+        });
     }
 };

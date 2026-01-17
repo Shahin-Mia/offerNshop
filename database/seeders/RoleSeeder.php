@@ -7,27 +7,20 @@ use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
+        // Ensure we are using the correct guard (usually 'web' or 'api')
         $roles = [
-            [
-                'name' => Role::ADMIN,
-                'description' => 'Administrator with full access',
-            ],
-            [
-                'name' => Role::USER,
-                'description' => 'Regular user with limited access',
-            ],
+            Role::ADMIN,
+            Role::USER,
         ];
 
-        foreach ($roles as $role) {
-            Role::firstOrCreate(
-                ['name' => $role['name']],
-                ['description' => $role['description']]
-            );
+        foreach ($roles as $roleName) {
+            // Spatie roles are unique by name AND guard_name
+            Role::firstOrCreate([
+                'name' => $roleName,
+                'guard_name' => 'web'
+            ]);
         }
     }
 }
