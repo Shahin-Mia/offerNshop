@@ -23,6 +23,10 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/social-login', [SocialAuthController::class, 'socialLogin']);
 
+// App Routes (Public)
+Route::get('/home', [\App\Http\Controllers\Api\HomeController::class, 'index']);
+Route::get('/search', [\App\Http\Controllers\Api\HomeController::class, 'search']);
+
 // Password Reset routes
 Route::post('/forgot-password', [AuthController::class, 'requestPasswordResetOTP']);
 Route::post('/verify-otp', [AuthController::class, 'verifyOTP']);
@@ -39,4 +43,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('permissions', PermissionController::class);
     Route::get('users', [UserController::class, 'index']);
     Route::post('users/{user}/assign-role', [UserController::class, 'assignRole']);
+
+    // Admin Core Resources
+    Route::apiResource('categories', \App\Http\Controllers\Api\CategoryController::class);
+    Route::apiResource('shops', \App\Http\Controllers\Api\ShopController::class);
+    Route::apiResource('products', \App\Http\Controllers\Api\ProductController::class);
 });

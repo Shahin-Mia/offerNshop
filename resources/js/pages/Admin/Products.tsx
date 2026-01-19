@@ -3,10 +3,29 @@ import { Button } from '@/Components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
 import { Input } from '@/Components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { Search, Plus } from 'lucide-react';
-import React from 'react';
+import { Search, Plus, Loader2 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Product, PaginatedResponse } from '@/types/schema';
 
 export default function Products() {
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get<PaginatedResponse<Product>>('/api/products');
+                setProducts(response.data.data);
+            } catch (error) {
+                console.error("Failed to fetch products", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProducts();
+    }, []);
+
     return (
         <AdminLayout title="Product Management">
             <div className="space-y-6">
@@ -38,39 +57,37 @@ export default function Products() {
                                 <TableRow>
                                     <TableHead>Product Name</TableHead>
                                     <TableHead>Shop</TableHead>
+                                    <TableHead>Category</TableHead>
                                     <TableHead>Price</TableHead>
-                                    <TableHead>Stock</TableHead>
                                     <TableHead className="text-right">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                <TableRow>
-                                    <TableCell className="font-medium">Summer T-Shirt</TableCell>
-                                    <TableCell>Fashion Hub</TableCell>
-                                    <TableCell>$19.99</TableCell>
-                                    <TableCell>120</TableCell>
-                                    <TableCell className="text-right">
-                                        <Button variant="ghost" size="sm">Edit</Button>
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell className="font-medium">Wireless Headphones</TableCell>
-                                    <TableCell>Tech World</TableCell>
-                                    <TableCell>$99.99</TableCell>
-                                    <TableCell>45</TableCell>
-                                    <TableCell className="text-right">
-                                        <Button variant="ghost" size="sm">Edit</Button>
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell className="font-medium">Organic Apples</TableCell>
-                                    <TableCell>Fresh Mart</TableCell>
-                                    <TableCell>$2.99/kg</TableCell>
-                                    <TableCell>500kg</TableCell>
-                                    <TableCell className="text-right">
-                                        <Button variant="ghost" size="sm">Edit</Button>
-                                    </TableCell>
-                                </TableRow>
+                                {loading ? (
+                                    <TableRow>
+                                        <TableCell colSpan={5} className="text-center py-10">
+                                            <Loader2 className="h-6 w-6 animate-spin mx-auto text-muted-foreground" />
+                                        </TableCell>
+                                    </TableRow>
+                                ) : products.length === 0 ? (
+                                    <TableRow>
+                                        <TableCell colSpan={5} className="text-center py-10 text-muted-foreground">
+                                            No products found.
+                                        </TableCell>
+                                    </TableRow>
+                                ) : (
+                                    products.map((product) => (
+                                        <TableRow key={product.id}>
+                                            <TableCell className="font-medium">{product.name}</TableCell>
+                                            <TableCell>{product.shop?.name || 'N/A'}</TableCell>
+                                            <TableCell>{product.category?.name || 'Uncategorized'}</TableCell>
+                                            <TableCell>${Number(product.price).toFixed(2)}</TableCell>
+                                            <TableCell className="text-right">
+                                                <Button variant="ghost" size="sm">Edit</Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                )}
                             </TableBody>
                         </Table>
                     </CardContent>

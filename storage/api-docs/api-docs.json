@@ -666,6 +666,192 @@
                 }
             }
         },
+        "/api/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "List all categories",
+                "description": "Display a listing of the resource.",
+                "operationId": "ac9c4d978ea4e5b72915ca9728e5b8b1",
+                "responses": {
+                    "200": {
+                        "description": "List of categories"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Create a new category",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "cca49a87d9b0ebb9a98ad7c154b71737",
+                "responses": {
+                    "201": {
+                        "description": "Category created"
+                    }
+                }
+            }
+        },
+        "/api/categories/{category}": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Get category details",
+                "description": "Display the specified resource.",
+                "operationId": "ff3ab984d3fe877eb16da6009394d694",
+                "responses": {
+                    "200": {
+                        "description": "Category details"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Update a category",
+                "description": "Update the specified resource in storage.",
+                "operationId": "3146e96866d62a90bd01a7070fd61470",
+                "responses": {
+                    "200": {
+                        "description": "Category updated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Delete a category",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "88c22abd8149aea4b3bdcb280a0fddf7",
+                "responses": {
+                    "204": {
+                        "description": "Category deleted"
+                    }
+                }
+            }
+        },
+        "/api/home": {
+            "get": {
+                "tags": [
+                    "User App"
+                ],
+                "summary": "Get Home Feed (Nearby Shops)",
+                "description": "Returns a list of shops within 10km radius of the provided latitude/longitude.",
+                "operationId": "d65ef76cbb32ae304c5a24c525b95adb",
+                "parameters": [
+                    {
+                        "name": "latitude",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "longitude",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "radius",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "shops": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "distance": {
+                                                        "type": "number"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "featured_products": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error"
+                    }
+                }
+            }
+        },
+        "/api/search": {
+            "get": {
+                "tags": [
+                    "User App"
+                ],
+                "summary": "Search Products",
+                "operationId": "7e0945ccea0cb30ffa6973d2d4de2c1d",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "latitude",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
+                        "name": "longitude",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Search results"
+                    }
+                }
+            }
+        },
         "/api/permissions": {
             "get": {
                 "tags": [
@@ -967,6 +1153,75 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        },
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "List products with pagination",
+                "description": "Display a listing of the resource.",
+                "operationId": "d97d1c3727cbac49708b85f7d11f7d58",
+                "responses": {
+                    "200": {
+                        "description": "Paginated list of products"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Create a new product",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "785644b7d7dd38af4b51dafd0fbc1b6d",
+                "responses": {
+                    "201": {
+                        "description": "Product created"
+                    }
+                }
+            }
+        },
+        "/api/products/{product}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get product details",
+                "description": "Display the specified resource.",
+                "operationId": "db00b523e69d5dbc09c6edad76374bdc",
+                "responses": {
+                    "200": {
+                        "description": "Product details"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Update a product",
+                "description": "Update the specified resource in storage.",
+                "operationId": "f47cf55f4f3e0b134b5e7d9a8373725d",
+                "responses": {
+                    "200": {
+                        "description": "Product updated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Delete a product",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "ac878db81fdb1333b21fc79e574a5a17",
+                "responses": {
+                    "204": {
+                        "description": "Product deleted"
+                    }
+                }
             }
         },
         "/api/roles": {
@@ -1406,6 +1661,75 @@
                 ]
             }
         },
+        "/api/shops": {
+            "get": {
+                "tags": [
+                    "Shops"
+                ],
+                "summary": "List shops with pagination",
+                "description": "Display a listing of the resource.",
+                "operationId": "27017e83e03c95e6a4fb951511513cda",
+                "responses": {
+                    "200": {
+                        "description": "Paginated list of shops"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Shops"
+                ],
+                "summary": "Create a new shop",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "e428784a186e12dcf23a33a07e681daa",
+                "responses": {
+                    "201": {
+                        "description": "Shop created"
+                    }
+                }
+            }
+        },
+        "/api/shops/{shop}": {
+            "get": {
+                "tags": [
+                    "Shops"
+                ],
+                "summary": "Get shop details",
+                "description": "Display the specified resource.",
+                "operationId": "4680eddd9f37a07270aebbfb2f370c42",
+                "responses": {
+                    "200": {
+                        "description": "Shop details"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Shops"
+                ],
+                "summary": "Update a shop",
+                "description": "Update the specified resource in storage.",
+                "operationId": "f57e8be24c342220163c5ff94dc1a19e",
+                "responses": {
+                    "200": {
+                        "description": "Shop updated"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Shops"
+                ],
+                "summary": "Delete a shop",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "62e836eb04855a376c1bea9ecf7578be",
+                "responses": {
+                    "204": {
+                        "description": "Shop deleted"
+                    }
+                }
+            }
+        },
         "/api/social-login": {
             "post": {
                 "tags": [
@@ -1710,6 +2034,18 @@
     },
     "tags": [
         {
+            "name": "Categories",
+            "description": "Admin Category Management"
+        },
+        {
+            "name": "Products",
+            "description": "Admin Product Management"
+        },
+        {
+            "name": "Shops",
+            "description": "Admin Shop Management"
+        },
+        {
             "name": "Authentication",
             "description": "API endpoints for user authentication"
         },
@@ -1728,6 +2064,10 @@
         {
             "name": "Permission",
             "description": "API endpoints for permission management"
+        },
+        {
+            "name": "User App",
+            "description": "User App"
         }
     ]
 }

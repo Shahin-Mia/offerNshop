@@ -3,11 +3,37 @@ import { Button } from '@/Components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/Components/ui/card';
 import { Input } from '@/Components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/Components/ui/table';
-import { Search, Store, Plus } from 'lucide-react';
+import { Search, Store, Plus, Loader2 } from 'lucide-react';
 import { Badge } from '@/Components/ui/badge';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Shop, PaginatedResponse } from '@/types/schema';
 
 export default function Shops() {
+    const [shops, setShops] = useState<Shop[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [query, setQuery] = useState('');
+
+    const fetchShops = async () => {
+        setLoading(true);
+        try {
+            const params = query ? { search: query } : {};
+            const response = await axios.get<PaginatedResponse<Shop>>('/api/shops', { params });
+            setShops(response.data.data);
+        } catch (error) {
+            console.error("Failed to fetch shops", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        const debounce = setTimeout(() => {
+            fetchShops();
+        }, 300);
+        return () => clearTimeout(debounce);
+    }, [query]);
+
     return (
         <AdminLayout title="Shop Management">
             <div className="space-y-6">
@@ -18,6 +44,8 @@ export default function Shops() {
                             type="search"
                             placeholder="Search shops..."
                             className="pl-8"
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
                         />
                     </div>
                     <Button>
@@ -38,40 +66,44 @@ export default function Shops() {
                             <TableHeader>
                                 <TableRow>
                                     <TableHead>Shop Name</TableHead>
-                                    <TableHead>Category</TableHead>
+                                    <TableHead>Location</TableHead>
                                     <TableHead>Owner</TableHead>
                                     <TableHead>Status</TableHead>
                                     <TableHead className="text-right">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                <TableRow>
-                                    <TableCell className="font-medium">Fashion Hub</TableCell>
-                                    <TableCell>Clothing</TableCell>
-                                    <TableCell>John Doe</TableCell>
-                                    <TableCell><Badge variant="default">Active</Badge></TableCell>
-                                    <TableCell className="text-right">
-                                        <Button variant="ghost" size="sm">Edit</Button>
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell className="font-medium">Tech World</TableCell>
-                                    <TableCell>Electronics</TableCell>
-                                    <TableCell>Jane Smith</TableCell>
-                                    <TableCell><Badge variant="secondary">Pending</Badge></TableCell>
-                                    <TableCell className="text-right">
-                                        <Button variant="ghost" size="sm">Edit</Button>
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell className="font-medium">Fresh Mart</TableCell>
-                                    <TableCell>Groceries</TableCell>
-                                    <TableCell>Mike Johnson</TableCell>
-                                    <TableCell><Badge variant="destructive">Suspended</Badge></TableCell>
-                                    <TableCell className="text-right">
-                                        <Button variant="ghost" size="sm">Edit</Button>
-                                    </TableCell>
-                                </TableRow>
+                                {loading ? (
+                                    <TableRow>
+                                        <TableCell colSpan={5} className="text-center py-10">
+                                            <Loader2 className="h-6 w-6 animate-spin mx-auto text-muted-foreground" />
+                                        </TableCell>
+                                    </TableRow>
+                                ) : shops.length === 0 ? (
+                                    <TableRow>
+                                        <TableCell colSpan={5} className="text-center py-10 text-muted-foreground">
+                                            No shops found.
+                                        </TableCell>
+                                    </TableRow>
+                                ) : (
+                                    shops.map((shop) => (
+                                        <TableRow key={shop.id}>
+                                            <TableCell className="font-medium">{shop.name}</TableCell>
+                                            <TableCell>{shop.address || 'N/A'}</TableCell>
+                                            <TableCell>Owner ID: {shop.owner_id || 'None'}</TableCell>
+                                            <TableCell>
+                                                {shop.is_active ? (
+                                                    <Badge variant="default">Active</Badge>
+                                                ) : (
+                                                    <Badge variant="destructive">Inactive</Badge>
+                                                )}
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                                <Button variant="ghost" size="sm">Edit</Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                )}
                             </TableBody>
                         </Table>
                     </CardContent>
